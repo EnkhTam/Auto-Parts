@@ -1,5 +1,7 @@
 <?php
+
 include 'database_connection.php'
+
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +14,7 @@ include 'database_connection.php'
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="header">
+  <div class="header">
     <div class="container">
       <div class="navbar">
           <div class="logo">
@@ -25,49 +27,75 @@ include 'database_connection.php'
               <li> <a href="user_account.php">Login</a></li>
             </ul>
           </nav>
-          <a href="cart.php"><img src="pics/view_cart.png" width="30px" height="30px"></a>
+          <img src="pics/view_cart.png" width="30px" height="30px">
           <img src="pics/menu.png" class="menu-icon" onclick="menutoggle()">
       </div>
-      <br>
-      <br>
-      <br>
     </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
 
-<!-------- featured products -------->
 
-<div class="small-container">
-    <h2 class="title">All Products</h2>
+<!-----------cart items details --------->
+<div class="small-container cart-page">
+  <table style="width:400px">
+    <tr>
+      <th style="width:600px">Product<br> </th>
+      <th style="width:600px" >Quantity <br> </th>
+      <th>Price <br> </th>
+    </tr>
 
-  <?php
-  /* change character set to utf8 */
-  $conn->set_charset("utf8");
+    <?php
+      session_start();
+      $cartTotal = 0;
+      if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $item) {
+          echo "<tr><td><br><br><div class='cart-info'><img src='" . $item[0] .
+          "' width='80%'><div><p>" . $item[1] . "</p><small> Price: $" . $item[2] .
+                "</small><br><br><br><br></div></div></td><td style='text-align:center'>" . $item[3] .
+                "</td><td>$" . $item[2] * $item[3] . "</td></tr>";
+              $cartTotal += $item[2] * $item[3];
+          }
+        }
 
-  // Collects data from "parts" table
-  $sql = "SELECT * FROM parts";
-  $result = $conn->query($sql);
-  echo "<div class='small-container'>";
-  echo "<div class='row'>";
-  if ($result->num_rows > 0) {
-  	while($row = $result->fetch_assoc()) {
-      echo "<div class='col-4'>";
-  		echo "<a href=product_details.php?price=" . $row['price'] . "&description="
-      . $row['description'] . "&picture=" . $row['pictureURL'] . "&weight="
-      . $row['weight'] . "></a><img src=" . $row['pictureURL'] . ">" . "</a>";
-      echo "<a href='product_details.php?price=" . $row['price'] . "&description="
-      . $row['description'] . "&picture=" . $row['pictureURL'] . "&weight="
-      . $row['weight'] . "'><h4>" . $row['description'] . "</h4>" . "</a>";
-      echo "<p>" . $row['price'] . "</p>";
-      echo "</div>";
-  	}
-  } else {
-  	Print "0 records found";
-  }
-  $conn->close();
 
-  ?>
+     ?>
 
+  </table>
+
+  <div class="total-price">
+    <table>
+      <tr>
+        <td>Subtotal</td>
+        <td>$<?php echo $cartTotal ?></td>
+      </tr>
+      <tr>
+        <td>Tax</td>
+        <td>$<?php echo round(.115 * $cartTotal, 2) ?></td>
+      </tr>
+      <tr>
+        <td>Shipping</td>
+        <td>$17</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>$<?php $_SESSION['totalcost'] = round(1.115 * $cartTotal + 17, 2); echo $_SESSION['totalcost']; ?></td>
+      </tr>
+      <tr>
+        <td> <a href='credit_card.php?price=' class='btn'>checkout</a> </td>
+      </tr>
   </div>
+      <tr>
+        <td><a href='clear_cart.php' type=submit class='btn'>Clear Cart</a></td>
+      </tr>
+</div>
+</div>
+</table>
+</div>
+</div>
+</div>
 
 
 <!---------- js for toggle menu --------->
@@ -93,9 +121,6 @@ include 'database_connection.php'
   <div class="container">
     <div class="row">
       <div class="footer-col-1">
-        <br>
-        <br>
-        <br>
         <!-- <p> Created By Enkhamgalan Tamillow</p> -->
         <h3>Download Our App</h3>
         <p>Download App for Android and ios Mobile Phone. </p>
@@ -106,11 +131,11 @@ include 'database_connection.php'
         <br>
         <img src="pics/logo.jpeg" width="100px">
       </div>
+
     </div>
-    <br>
-    <br>
-    <br>
+
   </div>
+
 </div>
 </body>
 </html>

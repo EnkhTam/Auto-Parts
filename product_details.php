@@ -1,20 +1,6 @@
 <?php
-  // require_once 'core/init.php';
-$servername = "blitz.cs.niu.edu";
-$username = "student";
-$password = "student";
-$dbname = "csci467";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-// echo "Connected successfully to: " . $servername;
+include 'database_connection.php'
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +24,7 @@ if ($conn->connect_error) {
               <li> <a href="user_account.php">Login</a></li>
             </ul>
           </nav>
-          <img src="pics/view_cart.png" width="30px" height="30px">
+          <a href="cart.php"><img src="pics/view_cart.png" width="30px" height="30px"></a>
           <img src="pics/menu.png" class="menu-icon" onclick="menutoggle()">
       </div>
     </div>
@@ -54,15 +40,35 @@ if ($conn->connect_error) {
           <br>
           <br>
           <br>
-          <img src="<?php echo $_GET['picture'];?>" width="150%">
+          <br>
+          <br>
+          <br>
+          <img src="<?php echo $_GET['picture'];?>" width="130%">
         </div>
         <div class="col-2">
-          <h1> <?php echo $_GET['description'];?> </h1>
+          <br>
+          <br>
+          <br>
+          <h2> <?php echo $_GET['description'];?> </h2>
+          <br>
           <h4>$ <?php echo $_GET['price']; ?> </h4>
 
-          <input type="number" value="1">
-          <a href="cart.php" class="btn">Add To Cart</a>
-          <h3>Product Details</h3>
+          <form name="form" action="" method="post">
+            <input type="number" name="quantity" class="form-control" value=1 min=1>
+            <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart">
+            <?php
+              session_start();
+              if (!isset($_SESSION['cart'])) {
+                  $_SESSION['cart'] = [];
+              }
+              if (isset($_POST['quantity'])) {
+                array_push($_SESSION['cart'], [$_GET['picture'], $_GET['description'], $_GET['price'], $_POST['quantity']]);
+              }
+            ?>
+          </form>
+
+          <!-- <a href="add_to_cart.php" class="btn">Add To Cart</a> -->
+
           <p>Weight: <?php echo $_GET['weight'];?> </p>
           <br>
           <br>
@@ -72,6 +78,7 @@ if ($conn->connect_error) {
     <br>
     <br>
     <br>
+
 <!---------- js for toggle menu --------->
     <script>
       var MenuItems = document.getElementById("MenuItems");

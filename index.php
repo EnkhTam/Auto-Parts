@@ -1,20 +1,11 @@
 <?php
-  // require_once 'core/init.php';
-$servername = "blitz.cs.niu.edu";
-$username = "student";
-$password = "student";
-$dbname = "csci467";
+// session_start();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// $_SESSION['cart'] = [];
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully to: " . $servername;
+include 'database_connection.php'
+
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +36,8 @@ echo "Connected successfully to: " . $servername;
       <div class="row">
           <div class="col-2">
               <h1>Grab What<br> You Need! </h1>
-              <p> Looking For Auto Parts? You Are <br>
-                In The Right Place! We Have<br>Everything You Need!
+              <p> Looking for auto parts? <br> You are
+                in the right place! <br>We have everything you need!
               </p>
               <a href="products.php" class="btn">Shop Now &#8594;</a>
           </div>
@@ -132,6 +123,8 @@ echo "Connected successfully to: " . $servername;
     <br>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
 </body>
 </html>
