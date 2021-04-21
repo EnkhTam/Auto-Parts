@@ -1,20 +1,10 @@
-<html>
-    <head></head>
-        <title>Best Auto Part</title>
-            <body>
-		    <h1>Warehouse Inventory Receiving Desk</h1>
-		    <h2>Enter the part number or description, then enter the quantity of products</h2>
-		    <form action="http://students.cs.niu.edu/~z1861817/inventory.php" method="POST">                
-		    <h3>(If you forget the part_number, you can choose to enter description)</h3>
-		    <label for = part_number>Part_number:</label><input type = "number" name = "part_number"><br>
-		    <h5>(<label for = description>Description:</label><input type = "text" name = "description">)</h5>
-		    <label for = quantityAvailable>Quantity:</label><input type = "number" name = "quantity"><br>
-
 <?php
+include("drawtable.php");
 $username1 = "student";
 $password1 = "student";
 $username2 = "z1861817";
 $password2 = "2000Jun02";
+
 
 try{
 	$dsn1 = "mysql:host=blitz.cs.niu.edu;dbname=csci467";
@@ -32,19 +22,54 @@ try{
 		   	 $res = $pdo1->query($count);
 		    	 if($res->rowCount() > 0)
 	 		 {
-				 echo "Part is found in Warehouse Inventory";
-				 echo "<br>";
 				 $q = $pdo1->prepare("select description from parts where number = ?");
 			         $q->execute([$_POST["part_number"]]);
 				 $name = $q->fetchColumn();
+				 echo "Product ".$name." is found in Warehouse Inventory";
+				 echo "<br>";
 				 $sql = "update inventory set quantityAvailable = quantityAvailable + ? where itemid = ?";
-		                 $stmt2 = $pdo2->prepare($sql);
+                 $stmt2 = $pdo2->prepare($sql);
 				 $stmt2->execute([$_POST["quantity"], $_POST["part_number"]]);
 				 $rows = $stmt2->rowCount();
 				 if($rows > 0)
 				 {
 					 echo "Inventory Updated, ".$_POST["quantity"]." ".$name." are added to the Warehouse Inventory";
 					 echo "<br>";
+					 echo "<br>";
+                     for($i = 0; $i < 28; $i++)
+                     {
+                         $q = $pdo1->prepare("select description from parts where number = ?");
+                                     $q->execute([$i+1]);
+                         $name = $q->fetchColumn();
+                                     $sql = "select quantityAvailable from inventory where itemid = ?";
+                                   $rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($i+1));
+                         $rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+                         draw_table($rows,$name);
+                     }
+                     for($j = 30; $j < 31; $j++)
+                     {
+                         $q = $pdo1->prepare("select description from parts where number = ?");
+                         $q->execute([$j+1]);
+                         $name = $q->fetchColumn();
+                         $sql = "select quantityAvailable from inventory where itemid = ?";
+                         $rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($j+1));
+                         $rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+                         draw_table($rows, $name);
+                     }
+                     
+                     for($m = 40; $m < 149; $m++)
+                     {
+                         $q = $pdo1->prepare("select description from parts where number = ?");
+                         $q->execute([$m+1]);
+                         $name = $q->fetchColumn();
+
+                         $sql = "select quantityAvailable from inventory where itemid = ?";
+                         $rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($m+1));
+                         $rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+                         
+                         draw_table($rows,$name);
+                     }
+
 				 }
 				 else
 				 {
@@ -54,7 +79,7 @@ try{
 		         }
 		         else
 		         {
-			 	echo "Part is not found in Warehouse Inventory";
+			 	echo "Product is not found in Warehouse Inventory";
 			 }	    
 		}
 		if(!empty($_POST["description"]) && empty($_POST["part_number"]))
@@ -77,6 +102,42 @@ try{
 				{
 					echo "Inventory Updated, ".$_POST["quantity"]." ".$_POST["description"]." are added to the Warehouse Inventory";
 					echo "<br>";
+					echo "<br>";
+
+					for($i = 0; $i < 28; $i++)
+					{
+						$q = $pdo1->prepare("select description from parts where number = ?");
+                        			$q->execute([$i+1]);
+						$name = $q->fetchColumn();
+                			        $sql = "select quantityAvailable from inventory where itemid = ?";
+                  				$rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($i+1));
+						$rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+						draw_table($rows,$name);
+					}
+                    for($j = 30; $j < 31; $j++)
+                    {
+                        $q = $pdo1->prepare("select description from parts where number = ?");
+                        $q->execute([$j+1]);
+                        $name = $q->fetchColumn();
+                        $sql = "select quantityAvailable from inventory where itemid = ?";
+                        $rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($j+1));
+                        $rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+                        draw_table($rows, $name);
+                    }
+                    
+                    for($m = 40; $m < 149; $m++)
+                    {
+                        $q = $pdo1->prepare("select description from parts where number = ?");
+                        $q->execute([$m+1]);
+                        $name = $q->fetchColumn();
+
+                        $sql = "select quantityAvailable from inventory where itemid = ?";
+                        $rs = $pdo2->query("select itemid, quantityAvailable from inventory where itemid = ".($m+1));
+                        $rows = $rs->fetchAll(PDO::FETCH_ASSOC);
+                        
+                        draw_table($rows,$name);
+                    }
+                    
 				}
 				else
 				{
@@ -92,20 +153,13 @@ try{
 
 
 	}
- 
-
-	
-	echo '<input type = "submit" value = "Add to the inventory">';
-	echo "</form>";
-
+ 	
 }
 
 catch(PDOexception $e) { // handle that exception
 echo "Connection to database failed: " . $e->getMessage(); }
 ?>
 
-</body>
-</html>
 
 
 
