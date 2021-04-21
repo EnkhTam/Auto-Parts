@@ -1,10 +1,13 @@
 <?php
 
-function draw_table($rows) {
+
+function draw_table($rows, $name) {
 	echo "<table border=1, cellspacing=1>";
 	echo "<tr>";
 	foreach($rows[0] as $key => $item) {
 		echo "<th>$key</th>";
+		echo "<th>Description</th>";
+		
 
 	}
 	echo "</tr>";
@@ -12,6 +15,8 @@ function draw_table($rows) {
 		echo "<tr>";
 		foreach($row as $key => $item) {
 			echo"<td>$item</td>";
+			echo "<td>$name</td>";
+		
 }
 	echo"</tr>";
 }	
