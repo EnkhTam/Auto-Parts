@@ -1,4 +1,15 @@
-# Auto-Parts
+1. URL for user interface: 
+
+	http://students.cs.niu.edu/~z1885846/Auto-Parts/index.php
+
+2. URL for the management interface: 
+
+	http://students.cs.niu.edu/~z1885846/auto_parts_central.php
+
+
+
+
+# Auto-Parts Group Project Handouts
 
 As a group of software engineers with a company that sells auto parts via a catalog and mail order, you are tasked to build a new system that enables Internet customers to place and pay for orders online. The system will handle credit card payment, assist in packing and shipping of the order, and keep inventory.
 
